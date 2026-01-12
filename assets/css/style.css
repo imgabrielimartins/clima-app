@@ -1,4 +1,6 @@
-/* 1. RESET E VARIÁVEIS */
+/* ==========================================================================
+   1. RESET E VARIÁVEIS
+   ========================================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -6,19 +8,28 @@
     font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* 2. LAYOUT DO BODY E TEMAS */
+:root {
+    --primary-color: #3b82f6;
+    --transition-speed: 0.3s;
+    --border-radius-lg: 28px;
+    --border-radius-md: 14px;
+}
+
+/* ==========================================================================
+   2. LAYOUT DO BODY E TEMAS DINÂMICOS
+   ========================================================================== */
 body {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #7fd8ff, #5aa9ff);
-    transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s;
+    transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1), color var(--transition-speed);
     padding: 20px;
     color: #1e293b;
 }
 
-/* Estados de Clima Dinâmicos */
+/* Estados de Clima */
 body.sunny  { background: linear-gradient(135deg, #fbbf24, #fde68a); }
 body.cloudy { background: linear-gradient(135deg, #cbd5f5, #94a3b8); }
 body.rainy  { background: linear-gradient(135deg, #64748b, #1e293b); }
@@ -29,7 +40,9 @@ body.dark-mode {
     color: #ffffff !important;
 }
 
-/* 3. CONTAINER PRINCIPAL (APP) */
+/* ==========================================================================
+   3. CONTAINER PRINCIPAL (APP)
+   ========================================================================== */
 .app {
     position: relative;
     width: 100%;
@@ -37,7 +50,7 @@ body.dark-mode {
     padding: 50px 35px;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    border-radius: 28px;
+    border-radius: var(--border-radius-lg);
     text-align: center;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
     animation: fadeUp 0.8s ease-out;
@@ -48,17 +61,19 @@ body.dark-mode .app {
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }
 
-/* 4. INPUTS E BOTÕES */
 .app h1 { margin-bottom: 35px; }
 
+/* ==========================================================================
+   4. INPUTS E BOTÕES DE BUSCA
+   ========================================================================== */
 input {
     width: 100%;
     padding: 16px;
     margin-bottom: 20px;
-    border-radius: 14px;
+    border-radius: var(--border-radius-md);
     border: 1px solid #ddd;
     outline: none;
-    transition: 0.3s;
+    transition: var(--transition-speed);
 }
 
 body.dark-mode input {
@@ -67,46 +82,22 @@ body.dark-mode input {
     color: white;
 }
 
+/* Grupo de Botões (Buscar + Estrela) */
 .button-group {
     display: flex;
-    justify-content: center; /* Centraliza o conjunto na tela */
-    align-items: center;     /* Garante que ambos tenham o mesmo alinhamento vertical */
-    gap: 12px;               /* Espaçamento entre eles */
-    width: 100%;             /* Ocupa a largura total do card branco */
-    margin-bottom: 35px;     /* Espaço para o resultado não colar nos botões */
-}
-#searchBtn {
-    flex-grow: 1;            /* Faz o botão ocupar o máximo de espaço central disponível */
-    height: 55px;            /* Define uma altura robusta e elegante */
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 0;        /* Remove margens antigas que desalinhavam */
-    border-radius: 14px;     /* Bordas arredondadas premium */
-}
-#saveCity {
-    flex-grow: 0;            /* Não deixa ele expandir como o Buscar */
-    height: 55px;            /* EXATAMENTE a mesma altura do botão buscar */
-    width: 65px;             /* Um pouco maior que a largura da estrela, como solicitado */
-    display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: 20px;         /* Tamanho da estrela */
-    margin-bottom: 0;        /* Remove margens antigas */
-    border-radius: 14px;
-    background: #3b82f6;     /* Mesma cor do buscar para unidade visual */
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 35px;
 }
-#searchBtn:hover, #saveCity:hover {
-    filter: brightness(1.1);
-    transform: translateY(-2px);
-}
+
 button {
-    padding: 14px;
-    background: #3b82f6;
-    color: white;
     border: none;
-    border-radius: 12px;
-    font-weight: 600;
     cursor: pointer;
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -115,30 +106,28 @@ button:hover {
     transform: translateY(-2px);
 }
 
-/* 5. BOTÃO DARK MODE (GIRA AO CLICAR) */
-#toggleDark {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 46px;
-    height: 46px;
-    background: #f1f5f9;
-    border-radius: 50%;
+#searchBtn {
+    flex-grow: 1;
+    height: 55px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: var(--border-radius-md);
+}
+
+#saveCity {
+    flex-grow: 0;
+    width: 65px;
+    height: 55px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    animation: float 3s ease-in-out infinite;
-    z-index: 10;
+    font-size: 20px;
+    border-radius: var(--border-radius-md);
 }
 
-body.dark-mode #toggleDark { background: #334155; }
-
-#toggleDark.animate { transform: rotate(360deg) scale(1.2); }
-
-/* 6. RESULTADOS E CLIMA */
+/* ==========================================================================
+   5. INTERFACE DE CLIMA (RESULTADOS)
+   ========================================================================== */
 .main-icon {
     font-size: 80px;
     margin: 20px 0;
@@ -160,9 +149,7 @@ body.dark-mode #toggleDark { background: #334155; }
     margin-bottom: 30px;
 }
 
-body.dark-mode .weather-details {
-    background: rgba(255, 255, 255, 0.08);
-}
+body.dark-mode .weather-details { background: rgba(255, 255, 255, 0.08); }
 
 .detail-item {
     display: flex;
@@ -173,7 +160,7 @@ body.dark-mode .weather-details {
 
 .detail-item strong { font-size: 16px; }
 
-/* 7. CARROSSEL E PREVISÃO */
+/* Carrossel Horário */
 .hourly-forecast {
     display: flex;
     overflow-x: auto;
@@ -192,6 +179,7 @@ body.dark-mode .weather-details {
 
 body.dark-mode .hour-item { background: rgba(255,255,255,0.05); }
 
+/* Previsão Diária */
 .forecast {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -205,50 +193,48 @@ body.dark-mode .hour-item { background: rgba(255,255,255,0.05); }
     background: rgba(0,0,0,0.02);
 }
 
-/* 8. SKELETON SCREEN (ANIMAÇÃO SHIMMER) */
-.skeleton-container {
-    width: 100%;
+/* ==========================================================================
+   6. FAVORITOS E DARK MODE TOGGLE
+   ========================================================================== */
+#toggleDark {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 46px;
+    height: 46px;
+    background: #f1f5f9;
+    border-radius: 50%;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: float 3s ease-in-out infinite;
+    z-index: 10;
 }
 
-.skeleton {
-    background: #eee;
-    background: linear-gradient(90deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite linear;
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
+body.dark-mode #toggleDark { background: #334155; }
+#toggleDark.animate { transform: rotate(360deg) scale(1.2); }
 
-body.dark-mode .skeleton {
-    background: #2c3e50;
-    background: linear-gradient(90deg, #2c3e50 8%, #3e5871 18%, #2c3e50 33%);
-    background-size: 200% 100%;
-}
-
-@keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-}
-
-.skeleton-text-title { width: 60%; height: 25px; }
-.skeleton-icon { width: 80px; height: 80px; border-radius: 50%; }
-.skeleton-text-temp { width: 40%; height: 35px; }
-
-/* 9. FAVORITOS */
+/* Pílulas de Favoritos */
 .fav-wrapper {
     display: inline-flex;
     align-items: center;
     position: relative;
     margin: 5px;
 }
+
 .fav-btn {
     padding: 10px 35px 10px 15px !important;
     border-radius: 25px;
     font-weight: 600;
-    text-transform: lowercase; /* Mantém o padrão dos seus prints */
+    text-transform: lowercase;
+}
+
+body.dark-mode .fav-btn {
+    background: #2d3748 !important;
+    color: #ffffff !important;
 }
 
 .remove-fav {
@@ -268,16 +254,44 @@ body.dark-mode .skeleton {
     line-height: 1;
 }
 
-/* Correção de cor no Modo Escuro para Favoritos */
-body.dark-mode .fav-btn {
-    background: #2d3748 !important;
-    color: #ffffff !important;
+body.dark-mode .remove-fav { background: rgba(255, 255, 255, 0.2); }
+
+/* ==========================================================================
+   7. SKELETON SCREEN
+   ========================================================================== */
+.skeleton-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-body.dark-mode .remove-fav {
-    background: rgba(255, 255, 255, 0.2);
+.skeleton {
+    background: #eee;
+    background: linear-gradient(90deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+    border-radius: 10px;
+    margin-bottom: 15px;
 }
-/* 10. ANIMAÇÕES */
+
+body.dark-mode .skeleton {
+    background: #2c3e50;
+    background: linear-gradient(90deg, #2c3e50 8%, #3e5871 18%, #2c3e50 33%);
+}
+
+.skeleton-text-title { width: 60%; height: 25px; }
+.skeleton-icon { width: 80px; height: 80px; border-radius: 50%; }
+.skeleton-text-temp { width: 40%; height: 35px; }
+
+/* ==========================================================================
+   8. ANIMAÇÕES
+   ========================================================================== */
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
 @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-6px); }
@@ -289,3 +303,28 @@ body.dark-mode .remove-fav {
 }
 
 .fade-in { animation: fadeUp 0.5s ease-in; }
+
+/* Cores Dinâmicas por Temperatura */
+body.cold { 
+    background: linear-gradient(135deg, #3a7bd5, #00d2ff) !important; 
+}
+body.mild { 
+    background: linear-gradient(135deg, #00b09b, #96c93d) !important; 
+}
+body.warm { 
+    background: linear-gradient(135deg, #f83600, #f9d423) !important; 
+}
+body.hot { 
+    background: linear-gradient(135deg, #ff416c, #ff4b2b) !important; 
+}
+
+/* Garante que o Modo Noturno ainda funcione sobrepondo as cores acima */
+body.dark-mode {
+    background: linear-gradient(135deg, #0f172a, #020617) !important;
+    color: #ffffff !important;
+}
+
+/* Suaviza a transição de uma cor para outra */
+body {
+    transition: background 0.8s ease-in-out, color 0.3s;
+}

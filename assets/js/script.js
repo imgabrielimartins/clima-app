@@ -1,8 +1,16 @@
-// 1. CONFIGURAÇÕES E SELEÇÃO DE ELEMENTOS
+// 1. CONFIGURAÇÕES E SONS
 const CONFIG = {
   BASE_URL: "https://api.open-meteo.com/v1/forecast",
   GEO_URL: "https://geocoding-api.open-meteo.com/v1/search",
   DAYS_MAP: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
+};
+
+const popSound = new Audio('https://www.fesliyanstudios.com/play-mp3/6');
+popSound.volume = 0.4;
+
+const playPop = () => {
+  popSound.currentTime = 0;
+  popSound.play().catch(() => {}); 
 };
 
 const el = {
@@ -26,29 +34,44 @@ const UI = {
     return "🌤️";
   },
 
-  setBgByCode(code) {
+  updateThemeByTemp(temp) {
     const body = document.body;
-    body.classList.remove("sunny", "rainy", "cloudy");
-    if (code === 0) body.classList.add("sunny");
-    else if (code <= 3) body.classList.add("cloudy");
-    else body.classList.add("rainy");
+    body.classList.remove("cold", "mild", "warm", "hot");
+
+    if (temp <= 15) body.classList.add("cold");
+    else if (temp <= 22) body.classList.add("mild");
+    else if (temp <= 30) body.classList.add("warm");
+    else body.classList.add("hot");
+  },
+
+  showSkeleton() {
+    el.result.innerHTML = `
+      <div class="skeleton-container">
+        <div class="skeleton skeleton-text-title"></div>
+        <div class="skeleton skeleton-icon"></div>
+        <div class="skeleton skeleton-text-temp"></div>
+        <div class="skeleton-details">
+          <div class="skeleton skeleton-small"></div>
+          <div class="skeleton skeleton-small"></div>
+        </div>
+      </div>
+    `;
   }
 };
 
 // 3. GESTÃO DE DADOS (API)
 const DataService = {
   async getWeather(lat, lon, name = "Sua localização") {
+    UI.showSkeleton();
     try {
-      // Ajuste na URL para pegar umidade e vento atuais + 24h de previsão
-      const url = `${CONFIG.BASE_URL}?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&hourly=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto`;
-      
+      const url = `${CONFIG.BASE_URL}?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&hourly=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto`;
       const resp = await fetch(url);
       if (!resp.ok) throw new Error();
       const data = await resp.json();
       
-      // Organiza os dados atuais para a renderização
       const currentDetails = {
         temperature: data.current.temperature_2m,
+        feelsLike: data.current.apparent_temperature,
         weathercode: data.current.weather_code,
         humidity: data.current.relative_humidity_2m,
         wind: data.current.wind_speed_10m
@@ -56,14 +79,13 @@ const DataService = {
 
       renderWeather(name, currentDetails, data.daily, data.hourly);
     } catch (error) {
-      el.result.innerHTML = "Erro ao carregar clima.";
-      console.error(error);
+      el.result.innerHTML = "<p class='error-msg'>Erro ao carregar clima.</p>";
     }
   },
 
   async getCoords(city) {
     if (!city) return alert("Digite uma cidade!");
-    el.result.innerHTML = "<p class='loading'>Buscando...</p>";
+    UI.showSkeleton();
     try {
       const resp = await fetch(`${CONFIG.GEO_URL}?name=${encodeURIComponent(city)}&count=1`);
       const data = await resp.json();
@@ -78,10 +100,13 @@ const DataService = {
 
 // 4. FUNÇÕES DE RENDERIZAÇÃO
 function renderWeather(name, current, daily, hourly) {
-  const { temperature, weathercode, humidity, wind } = current;
+  const { temperature, feelsLike, weathercode, humidity, wind } = current;
   const now = new Date().getHours();
 
-  // 1. Carrossel por Hora
+  // Atualiza a cor de fundo pela temperatura
+  UI.updateThemeByTemp(temperature);
+
+  // Previsão por Hora
   let hourlyHTML = `<div class="hourly-forecast">`;
   for (let i = 0; i < 24; i++) {
     const hourLabel = (now + i) % 24;
@@ -94,44 +119,35 @@ function renderWeather(name, current, daily, hourly) {
   }
   hourlyHTML += `</div>`;
 
-  // 2. Previsão Semanal
-  let forecastHTML = `<div class="forecast">`;
-  for (let i = 1; i < 7; i++) {
-    const [y, m, d] = daily.time[i].split("-").map(Number);
-    const dayName = CONFIG.DAYS_MAP[new Date(y, m - 1, d).getDay()];
-    forecastHTML += `
-      <div class="day">
-        <p><strong>${dayName}</strong></p>
-        <span class="day-icon">${UI.getIcon(daily.weather_code[i])}</span>
-        <p>${Math.round(daily.temperature_2m_max[i])}° / ${Math.round(daily.temperature_2m_min[i])}°</p>
-      </div>`;
-  }
-  forecastHTML += `</div>`;
-
-  // 3. Montagem do HTML Final
+  // Montagem do HTML Final
   el.result.innerHTML = `
-    <h2>${name}</h2>
-    <div class="main-icon">${UI.getIcon(weathercode)}</div>
-    <p class="temp">🌡️ ${Math.round(temperature)}°C</p>
-    
-    <div class="weather-details">
-        <div class="detail-item">💧 <span>Umidade</span> <strong>${humidity}%</strong></div>
-        <div class="detail-item">💨 <span>Vento</span> <strong>${wind} km/h</strong></div>
+    <div class="weather-info fade-in">
+        <h2 class="location-label">${name}</h2>
+        <div class="main-icon pulse">${UI.getIcon(weathercode)}</div>
+        <p class="temp">${Math.round(temperature)}°C</p>
+        <p class="feels-like">Sensação de ${Math.round(feelsLike)}°C</p>
+        
+        <div class="weather-details">
+            <div class="detail-item">
+                <span>💧 Umidade</span>
+                <strong>${humidity}%</strong>
+            </div>
+            <div class="detail-item">
+                <span>💨 Vento</span>
+                <strong>${Math.round(wind)} km/h</strong>
+            </div>
+        </div>
+
+        <h3 class="section-title">Próximas Horas</h3>
+        ${hourlyHTML}
+
+        <h3 class="section-title">Tendência Semanal</h3>
+        <div class="chart-container">
+            <canvas id="tempChart"></canvas>
+        </div>
     </div>
-
-    <h3 class="section-title">Próximas Horas</h3>
-    ${hourlyHTML}
-
-    <h3 class="section-title">Tendência Semanal</h3>
-    <div class="chart-container">
-        <canvas id="tempChart"></canvas>
-    </div>
-
-    <h3 class="section-title">Próximos Dias</h3>
-    ${forecastHTML}
   `;
     
-  UI.setBgByCode(weathercode);
   createTrendChart(daily);
 }
 
@@ -171,19 +187,23 @@ function createTrendChart(daily) {
 
 // 6. AÇÕES E LISTENERS
 const Actions = {
-  handleSearch: () => DataService.getCoords(el.input.value.trim()),
+  handleSearch: () => {
+    playPop();
+    DataService.getCoords(el.input.value.trim());
+  },
   
   handleTheme: () => {
+    playPop();
+    const isDark = document.body.classList.toggle("dark-mode");
     el.toggleDark.classList.add("animate");
-    const isDark = !document.body.classList.contains("dark");
-    document.body.classList.toggle("dark", isDark);
-    setTimeout(() => { el.toggleDark.textContent = isDark ? "☀️" : "🌙"; }, 200);
-    setTimeout(() => { el.toggleDark.classList.remove("animate"); }, 500);
+    el.toggleDark.textContent = isDark ? "☀️" : "🌙";
+    setTimeout(() => el.toggleDark.classList.remove("animate"), 500);
   },
 
   saveFav: () => {
     const city = el.input.value.trim();
     if (!city) return;
+    playPop();
     let favs = JSON.parse(localStorage.getItem("cities")) || [];
     if (!favs.some(f => f.toLowerCase() === city.toLowerCase())) {
       favs.push(city);
@@ -193,6 +213,7 @@ const Actions = {
   },
 
   removeFav: (cityToRemove) => {
+    playPop();
     let favs = JSON.parse(localStorage.getItem("cities")) || [];
     favs = favs.filter(city => city.toLowerCase() !== cityToRemove.toLowerCase());
     localStorage.setItem("cities", JSON.stringify(favs));
@@ -203,7 +224,7 @@ const Actions = {
     const favs = JSON.parse(localStorage.getItem("cities")) || [];
     el.favoritesDiv.innerHTML = favs.map(c => `
         <div class="fav-wrapper">
-            <button class="fav-btn" data-city="${c}">${c}</button>
+            <button class="fav-btn" data-city="${c}">${c.toLowerCase()}</button>
             <button class="remove-fav" data-remove="${c}">✕</button>
         </div>
       `).join("");
@@ -217,7 +238,10 @@ el.input.addEventListener("keypress", (e) => { if (e.key === "Enter") Actions.ha
 
 el.favoritesDiv.addEventListener("click", (e) => {
   if (e.target.dataset.remove) return Actions.removeFav(e.target.dataset.remove);
-  if (e.target.dataset.city) DataService.getCoords(e.target.dataset.city);
+  if (e.target.dataset.city) {
+    el.input.value = e.target.dataset.city;
+    Actions.handleSearch();
+  }
 });
 
 window.addEventListener("load", () => {
@@ -225,32 +249,7 @@ window.addEventListener("load", () => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (p) => DataService.getWeather(p.coords.latitude, p.coords.longitude),
-      () => el.result.innerHTML = "<p>Localização negada.</p>"
+      () => el.result.innerHTML = "<p>Localização negada. Digite uma cidade.</p>"
     );
   }
 });
-
-// Dentro da parte onde você renderiza o clima real
-resultSection.innerHTML = `
-  <div class="weather-info fade-in">
-    <p class="location-label">Sua localização</p>
-    <img src="${data.iconUrl}" alt="Clima" class="main-icon">
-    <p class="temp">${Math.round(data.main.temp)}°C</p>
-    
-    <div class="weather-details">
-      <div class="detail-item">
-        <span>💧</span>
-        <span>${data.main.humidity}%</span>
-      </div>
-      <div class="detail-item">
-        <span>💨</span>
-        <span>${Math.round(data.wind.speed * 3.6)} km/h</span>
-      </div>
-    </div>
-  </div>
-`;
-
-document.getElementById('toggleDark').addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-});
-
