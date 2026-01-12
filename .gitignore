@@ -1,22 +1,25 @@
-# Sistema operacional
+# Dependências
+node_modules/
+dist/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testes e Cobertura
+coverage/
+.jest/
+
+# Sistema Operacional
 .DS_Store
 Thumbs.db
 
-# VS Code
+# Configurações de IDE
 .vscode/
-
-# IDEs
 .idea/
-*.sublime-project
-*.sublime-workspace
 
-# Logs
-*.log
-
-# Arquivos temporários
-*.tmp
-*.swp
-*.bak
-
-# Pastas de cache
-.cache/
+# Arquivos de ambiente (caso venha a usar chaves de API privadas)
+.env
+.env.local

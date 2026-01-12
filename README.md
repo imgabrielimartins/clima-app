@@ -1,66 +1,71 @@
-🌤️ Weather App
+🌤️ Clima App
 
-Aplicação web simples que permite buscar o clima de qualquer cidade do mundo em tempo real utilizando a API Open-Meteo.
+Uma aplicação moderna de previsão do tempo que utiliza a API Open-Meteo para fornecer dados meteorológicos precisos em tempo real. O projeto apresenta previsões horárias, tendências semanais com gráficos e um sistema de cidades favoritas.
 
-O usuário digita o nome da cidade e o sistema exibe a temperatura atual de forma clara e intuitiva.
+🚀 Funcionalidades
 
-🚀 Demonstração
+Busca por Cidade: Encontre o clima de qualquer lugar do mundo.
 
-(adicione aqui o link do GitHub Pages quando publicar)
+Geolocalização: Detecta automaticamente sua posição para exibir o clima local ao abrir o app.
 
-🛠️ Tecnologias utilizadas
+Gráficos Dinâmicos: Visualização de tendências de temperatura usando Chart.js.
 
-HTML5
+Favoritos: Salve suas cidades preferidas no localStorage para acesso rápido.
 
-CSS3
+Modo Escuro: Interface adaptável para maior conforto visual.
 
-JavaScript (ES6+)
+Feedback Premium: Efeitos sonoros sutis e animações de carregamento (skeleton screens).
 
-Open-Meteo API
+🛠️ Tecnologias Utilizadas
 
-📌 Funcionalidades
+HTML5 (Semântico)
 
-🔍 Busca de cidade por nome
+CSS3 (Variáveis, Flexbox e Grid)
 
-🌡️ Exibição da temperatura atual
+JavaScript (ES6+, Manipulação de DOM, Fetch API)
 
-🌎 Suporte a cidades do mundo todo
+Chart.js (Gráficos de linha)
 
-📱 Interface responsiva e simples
+Jest (Testes Unitários)
 
-⚡ Consumo de API em tempo real
+🧪 Testes com Jest
 
-📂 Estrutura do projeto
+Para garantir a confiabilidade das funções de utilidade (como ícones e tratamento de dados), o projeto utiliza o Jest.
 
-weather-app/
-│
-├── index.html
-├── README.md
-├── .gitignore
-│
+Como rodar os testes:
+
+Certifique-se de ter o Node.js instalado.
+
+Instale as dependências de desenvolvimento:
+
+npm install
+
+Execute a suíte de testes:
+
+npm test
+
+📦 Estrutura de Arquivos
+
 ├── assets/
-│   ├── icons/       
-│   └── images/      
-│
-├── css/
-│   └── style.css
-│
-└── js/
-    └── script.js
+│   ├── css/          # Estilos (style.css)
+│   ├── js/           # Lógica da aplicação (script.js)
+│   ├── icon/         # Ícones e favicons
+├── tests/            # Arquivos de teste (.test.js)
+├── index.html        # Estrutura principal
+└── package.json      # Configurações de dependências 
 
-🌐 API utilizada
+⚙️ Configuração Local
 
-Este projeto utiliza a API gratuita da Open-Meteo:
+Se você deseja clonar e rodar o projeto localmente:
 
-https://open-meteo.com/
+Clone este repositório:
 
-Ela fornece dados meteorológicos em tempo real sem necessidade de chave de API.
+git clone https://github.com/seu-usuario/clima-app.git
+
+Abra o arquivo index.html diretamente no seu navegador ou utilize a extensão Live Server no VS Code para uma melhor experiência.
 
 👩‍💻 Autora
 
-Gabrieli Martins
-Desenvolvedora Full Stack
+Gabrieli Martins 
 
-GitHub: https://github.com/seuusuario
-
-LinkedIn: https://linkedin.com/in/seuperfil
+Desenvolvedora Fullstack
