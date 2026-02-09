@@ -1,71 +1,73 @@
-🌤️ Clima App
+# 🌤️ Clima App
 
-Uma aplicação moderna de previsão do tempo que utiliza a API Open-Meteo para fornecer dados meteorológicos precisos em tempo real. O projeto apresenta previsões horárias, tendências semanais com gráficos e um sistema de cidades favoritas.
+Aplicação moderna de previsão do tempo que utiliza a **API Open-Meteo** para fornecer dados meteorológicos precisos em tempo real.  
+O projeto apresenta previsões horárias, tendências semanais com gráficos interativos e sistema de cidades favoritas, tudo com uma interface elegante e responsiva.
 
-🚀 Funcionalidades
+---
 
-Busca por Cidade: Encontre o clima de qualquer lugar do mundo.
+## 🚀 Funcionalidades
 
-Geolocalização: Detecta automaticamente sua posição para exibir o clima local ao abrir o app.
+- 🔎 **Busca por Cidade**  
+  Pesquise o clima de qualquer lugar do mundo em tempo real.
 
-Gráficos Dinâmicos: Visualização de tendências de temperatura usando Chart.js.
+- 📍 **Geolocalização Automática**  
+  Detecta sua localização ao abrir o app e exibe o clima local.
 
-Favoritos: Salve suas cidades preferidas no localStorage para acesso rápido.
+- 📊 **Gráficos Dinâmicos**  
+  Visualização de tendências de temperatura com **Chart.js**.
 
-Modo Escuro: Interface adaptável para maior conforto visual.
+- ⭐ **Sistema de Favoritos**  
+  Salve cidades no `localStorage` para acesso rápido.
 
-Feedback Premium: Efeitos sonoros sutis e animações de carregamento (skeleton screens).
+- 🌙 **Modo Escuro**  
+  Interface adaptável para maior conforto visual.
 
-🛠️ Tecnologias Utilizadas
+- ✨ **Experiência Premium**  
+  - Skeleton screens durante carregamento  
+  - Microinterações e efeitos sonoros sutis  
 
-HTML5 (Semântico)
+---
 
-CSS3 (Variáveis, Flexbox e Grid)
+## 🛠️ Tecnologias Utilizadas
 
-JavaScript (ES6+, Manipulação de DOM, Fetch API)
+- **HTML5** (Estrutura semântica)
+- **CSS3** (Variáveis CSS, Flexbox e Grid)
+- **JavaScript ES6+** (Manipulação de DOM e Fetch API)
+- **Chart.js** (Gráficos interativos)
+- **Jest** (Testes unitários)
 
-Chart.js (Gráficos de linha)
+---
 
-Jest (Testes Unitários)
+## 🧠 Conceitos Aplicados
 
-🧪 Testes com Jest
+- Consumo de API REST
+- Manipulação assíncrona com `async/await`
+- Tratamento de erros
+- Modularização de código
+- Armazenamento local com `localStorage`
+- Boas práticas de UX/UI
 
-Para garantir a confiabilidade das funções de utilidade (como ícones e tratamento de dados), o projeto utiliza o Jest.
+---
 
-Como rodar os testes:
+## 🧪 Testes com Jest
 
-Certifique-se de ter o Node.js instalado.
+O projeto utiliza **Jest** para validar funções utilitárias como:
 
-Instale as dependências de desenvolvimento:
+- Tratamento de dados da API
+- Mapeamento de ícones climáticos
+- Conversão e formatação de temperatura
 
+### ▶️ Como rodar os testes
+
+1. Certifique-se de ter o **Node.js** instalado  
+2. Instale as dependências:
+
+```bash
 npm install
+```
 
-Execute a suíte de testes:
+# 👩‍💻 Autora
 
-npm test
-
-📦 Estrutura de Arquivos
-
-├── assets/
-│   ├── css/          # Estilos (style.css)
-│   ├── js/           # Lógica da aplicação (script.js)
-│   ├── icon/         # Ícones e favicons
-├── tests/            # Arquivos de teste (.test.js)
-├── index.html        # Estrutura principal
-└── package.json      # Configurações de dependências 
-
-⚙️ Configuração Local
-
-Se você deseja clonar e rodar o projeto localmente:
-
-Clone este repositório:
-
-git clone https://github.com/seu-usuario/clima-app.git
-
-Abra o arquivo index.html diretamente no seu navegador ou utilize a extensão Live Server no VS Code para uma melhor experiência.
-
-👩‍💻 Autora
-
-Gabrieli Martins 
+Gabrieli Martins
 
 Desenvolvedora Fullstack
